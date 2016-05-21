@@ -47,7 +47,11 @@ $(function(){
  }
 
   var get_motif_occurences = function(seq,matrix){
-  	return [1, 8]; // TODO
+  	return [
+   	{motif: 'AP2A', pos: 3, len: 4, strand: '+', },
+   	{motif: 'AP2A', pos: 6, len: 4, strand: '+', },
+   	{motif: 'AP2B', pos: 12, len: 3, strand: '+', },
+   ]; // TODO
   }
 
   var with_motif_pwm = function(motif_name, callback) {
@@ -79,8 +83,10 @@ $(function(){
 
   $('#markup_button').click(function(event){
     var sequence = $('#sequence_input').val();
-    console.log('Markup sequence ' + sequence);
-    var i = markup(sequence,get_motif_occurences(sequence," "),4);
+    // console.log('Markup sequence ' + sequence);
+    var sites = get_motif_occurences(sequence," ");
+    console.log(make_segmentation(sites));
+    var i = markup_segmentation(sequence, make_segmentation(sites));
     $('#result').html(i);
   });
 
