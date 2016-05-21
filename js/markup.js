@@ -120,12 +120,24 @@ $(function(){
   //   {start: 10, end: 12, sites:[]},
   //   {start: 12, end: 14, sites:[2]},
   // ];
+
+
+  var wrap_in_multispan = function(text, span_classes) {
+    if (span_classes.length == 0) {
+      return text;
+    } else {
+      return '<span class="' + span_classes[0] + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
+    }
+  }
+
   var markup_segmentation = function(sequence, segmentation) {
     return $.map(segmentation, function(segment) {
-      classes = segment.sites.map(function(el) {
+      classes = segment.sites.sort().reverse().map(function(el) {
         return 'motif-' + el;
-      }).join(' ');
-      return '<span class="' + classes + '">' + sequence.slice(segment.start, segment.end) + '</span>';
+      });
+
+
+      return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes);
     }).join('');
   }
 
