@@ -1,6 +1,10 @@
 #motif-list {
+  display: none;
   height: 100px;
   overflow-y: scroll;
+}
+#motif-list-selected {
+  height: 100px;
 }
 
 .motif {

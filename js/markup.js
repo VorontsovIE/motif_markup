@@ -15,7 +15,7 @@ $(function(){
   };
 
   var selected_motifs = function() {
-    return $('.motif.selected').map(function(ind, el){
+    return $('#motif-list-selected .motif').map(function(ind, el){
       return $(el).text();
     });
   }
@@ -40,8 +40,22 @@ $(function(){
   });
 
   $('#motif-list').on('click', '.motif', function(event){
-    $(event.target).toggleClass('selected');
+    var $motif = $(event.target);
+    $motif.appendTo('#motif-list-selected');
   });
+  $('#motif-list-selected').on('click', '.motif', function(event){
+    var $motif = $(event.target);
+    $motif.appendTo('#motif-list');
+  });
+
+  var sites_in_dict = function(dict) {
+    var result = [];
+    for (site in dict) {
+      if (dict[site])
+        result.push(site);
+    }
+    return result;
+  }
 
   // sequence = 'ACTAGACTAACGTTA';
   // segmentation = [
@@ -60,4 +74,8 @@ $(function(){
       return '<span class="' + classes + '">' + sequence.slice(segment.start, segment.end) + '</span>';
     }).join('');
   }
+
+  $('#show_motif_list').click(function(event){
+    $('#motif-list').show();
+  });
 });
