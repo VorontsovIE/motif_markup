@@ -8,12 +8,40 @@ $(function(){
     }
     return result;
   }
-
   // sites = [
-  // 	{motif: 'AP2A', pos: 3, len: 4, strand: '+', },
+  // 	{motif: 'AP2A', pos: 3, len: 4, strand: '+', strength: 5.5}, // сила от 0(прозрачно) до 10(непрозрачно)
   // 	{motif: 'AP2A', pos: 6, len: 4, strand: '+', },
   // 	{motif: 'AP2B', pos: 12, len: 3, strand: '+', },
   // ];
+  var get_color = function(motifG)
+  {
+  	if(motifG == 'motif-0')
+  	{
+  		return '#6a38ff';
+  	}
+
+  	if(motifG == 'motif-1')
+  	{
+  		return '#FF0000';
+  	}
+
+  	if(motifG == 'motif-2')
+  	{
+  		return '#FFD700';
+  	}
+
+  	if(motifG == 'motif-3')
+  	{
+  		return '#800000';
+  	}
+
+  	if(motifG == 'motif-4')
+  	{
+  		return '#FF00FF';
+  	}
+
+
+  }
   var make_segmentation = function(sites,seq){
   	var segments = [];
   	var points = [];
@@ -59,9 +87,9 @@ $(function(){
 
   var get_motif_occurences = function(seq,matrix){
   	return [
-   	{motif: 'AP2A', pos: 3, len: 4, strand: '+', },
-   	{motif: 'AP2A', pos: 6, len: 4, strand: '+', },
-   	{motif: 'AP2B', pos: 12, len: 3, strand: '+', },
+   	{motif: 'AP2A', pos: 3, len: 4, strand: '+',strength: 1},
+   	{motif: 'AP2A', pos: 6, len: 4, strand: '+', strength: 1},
+   	{motif: 'AP2B', pos: 12, len: 3, strand: '+', strength: 0.5},
    ]; // TODO
   }
 
@@ -95,9 +123,9 @@ $(function(){
   $('#markup_button').click(function(event){
     var sequence = $('#sequence_input').val();
     // console.log('Markup sequence ' + sequence);
-    var sites = get_motif_occurences(sequence," ");
+    sites = get_motif_occurences(sequence," ");
     console.log(make_segmentation(sites));
-    var i = markup_segmentation(sequence, make_segmentation(sites));
+    var i = markup_segmentation(sequence, sites);
     $('#result').html(i);
   });
 
@@ -120,24 +148,44 @@ $(function(){
   //   {start: 10, end: 12, sites:[]},
   //   {start: 12, end: 14, sites:[2]},
   // ];
+  var get_strength = function(motifS)
+  	{
+  		for (var i = sites.length - 1; i >= 0; i--) {
+  			if(sites[i].motif == motifS)
+  			{
+  				return sites[i].strength
+  			}
+  		}
+  	}
 
-
-  var wrap_in_multispan = function(text, span_classes) {
+  var wrap_in_multispan = function(text, span_classes,strength) {
     if (span_classes.length == 0) {
       return text;
     } else {
-      return '<span class="' + span_classes[0] + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
+      var motif = span_classes[0][1];
+      var klass = span_classes[0][0];
+      console.log(get_color(motif)+"  "+motif+" "+klass+"  "+get_strength(motif))
+      return '<span style="background-color: '+ get_color(klass) +'; opacity:'+ get_strength(motif) +';" class="' + klass + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
     }
   }
 
-  var markup_segmentation = function(sequence, segmentation) {
+  var markup_segmentation = function(sequence, sites) {
+  	var max_number = -1;
+  	var number_to_subtract = 0;
+  	var segmentation = make_segmentation(sites, sequence.length);
     return $.map(segmentation, function(segment) {
-      classes = segment.sites.sort().reverse().map(function(el) {
-        return 'motif-' + el;
+		max_number = Math.max(max_number, Math.max.apply(Math, segment.sites));
+    	if(segment.sites.length == 0){
+    		number_to_subtract = max_number + 1;
+    	}
+      classes = segment.sites.sort().reverse().map(function(el)
+      {
+      	// console.log(el);
+        return ['motif-' + (el - number_to_subtract), sites[el].motif,];
       });
 
-
-      return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes);
+      console.log(segment)
+      return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes,segment.strength);
     }).join('');
   }
 

@@ -23,27 +23,31 @@
   width: 100%;
 }
 
+.motif-0, .motif-1, .motif-2, .motif-3, .motif-4 {
+	border: 1px solid black;
+}
+
 .motif-0 {
-	background-color: #6a38ff;
+	/*background-color: #6a38ff;*/
 	padding: 0px 0;
 }
 
 .motif-1 {
   padding: 2px 0;
-  background-color: #FF0000;
+  /*background-color: #FF0000;*/
 }
 
 .motif-2 {
   padding: 4px 0;
-  background-color: #FFD700;
+  /*background-color: #FFD700;*/
 }
 
 .motif-3 {
   padding: 6px 0;
-  background-color: #800000;
+  /*background-color: #800000;*/
 }
 
 .motif-4 {
 	padding: 8px 0;
-	background-color: #FF00FF;
+	/*background-color: #FF00FF;*/
 }
