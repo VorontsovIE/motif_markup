@@ -1,4 +1,12 @@
 $(function(){
+  var markup = function(seq, pos, len) {
+	var i;
+	for(i=pos.length-1; i >= 0; i--) {
+	  seq = seq.replace(seq.slice(pos[i],pos[i]+len),'<span class="motif1">'+seq.slice(pos[i],pos[i]+len)+'</span>');
+	}
+	return seq
+  }
+
   var with_motif_pwm = function(motif_name, callback) {
     var result = null;
     $.get('http://hocomoco.autosome.ru/motif/' + motif_name + '.json', {with_matrices: true}, function(data){
