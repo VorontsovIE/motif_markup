@@ -24,21 +24,26 @@
 }
 
 .motif-0 {
-	background-color: #6a38ff
+	background-color: #6a38ff;
+	padding: 0px 0;
 }
 
 .motif-1 {
-	background-color: #FF0000
+	padding: 2px 0;
+	background-color: #FF0000;
 }
 
 .motif-2 {
-	background-color: #FFD700
+	padding: 4px 0;
+	background-color: #FFD700;
 }
 
 .motif-3 {
-	background-color: #800000
+	padding: 6px 0;
+	background-color: #800000;
 }
 
 .motif-4 {
-	background-color: #FF00FF
+	padding: 8px 0;
+	background-color: #FF00FF;
 }

@@ -14,36 +14,47 @@ $(function(){
   // 	{motif: 'AP2A', pos: 6, len: 4, strand: '+', },
   // 	{motif: 'AP2B', pos: 12, len: 3, strand: '+', },
   // ];
-  var make_segmentation = function(sites){
+  var make_segmentation = function(sites,seq){
   	var segments = [];
   	var points = [];
     var i;
   	for (i = sites.length - 1; i >= 0; i--) {
   		points.push({number:i, point:sites[i].pos, type:'start'});
-  		points.push({number:i, point:sites[i].pos + sites[i].len - 1, type:'end'});
+  		points.push({number:i, point:sites[i].pos + sites[i].len, type:'end'});
   	}
   	points.sort(function(a,b){ return a.point - b.point; });
+  	// $.each(points, function(point){
+  	// 	console.log(point);
+  	// });
+  	console.log(points);
     
     var last_point_pos = 0;
     var site_numbers = {};
     for (i = 0; i < points.length; ++i) {
     	var thispoint = points[i];
+	    if (last_point_pos != thispoint.point) {
+	      segments.push({
+	        start: last_point_pos,
+	        end: thispoint.point,
+	        sites: sites_in_dict(site_numbers),
+	      });
+	      last_point_pos = thispoint.point;
+	    }
     	site_numbers = $.extend({}, site_numbers); // clone
     	if (thispoint.type == 'start') {
-        site_numbers[thispoint.number] = true;
-      } else {
-        site_numbers[thispoint.number] = false;
-      }
-    	if (last_point_pos != thispoint.point) {
-    		segments.push({
-          start: last_point_pos,
-          end: thispoint.point,
-          sites: sites_in_dict(site_numbers)
-        });
-    	  last_point_pos = thispoint.point;
-    	}
+          site_numbers[thispoint.number] = true;
+        } else {
+          site_numbers[thispoint.number] = false;
+        }
     }
+    segments.push({
+    		start: last_point_pos,
+	        end: seq,
+	        sites: sites_in_dict(site_numbers),
+	    });
+    console.log(segments)
     return segments
+
  }
 
   var get_motif_occurences = function(seq,matrix){
