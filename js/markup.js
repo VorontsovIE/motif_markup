@@ -14,6 +14,12 @@ $(function(){
     });
   };
 
+  var selected_motifs = function() {
+    return $('.motif.selected').map(function(ind, el){
+      return $(el).text();
+    });
+  }
+
   // $.get('http://hocomoco.autosome.ru/human/mono.json', function(data){
   //   var motif_list = data;
   //   var motif_list_formatted = $.map(motif_list, function(el,ind){
@@ -36,4 +42,22 @@ $(function(){
   $('#motif-list').on('click', '.motif', function(event){
     $(event.target).toggleClass('selected');
   });
+
+  // sequence = 'ACTAGACTAACGTTA';
+  // segmentation = [
+  //   {start: 0, end: 3, sites:[]},
+  //   {start: 3, end: 6, sites:[0]},
+  //   {start: 6, end: 7, sites:[0, 1]},
+  //   {start: 7, end: 10, sites:[1]},
+  //   {start: 10, end: 12, sites:[]},
+  //   {start: 12, end: 14, sites:[2]},
+  // ];
+  var markup_segmentation = function(sequence, segmentation) {
+    return $.map(segmentation, function(segment) {
+      classes = segment.sites.map(function(el) {
+        return 'motif-' + el;
+      }).join(' ');
+      return '<span class="' + classes + '">' + sequence.slice(segment.start, segment.end) + '</span>';
+    }).join('');
+  }
 });
