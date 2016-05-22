@@ -3,6 +3,12 @@ $(function(){
     return (Math.log(x)/Math.log(10) );
   }
 
+  function rescale(number){
+  		var i = (number - 1)/6;
+  		if(i <= 0.4) return 0.4;
+  		return i;
+  }
+
   function getScores(sequence, motif, direction) {
     var nucleotide_index = { // for pwm
       "A" : "0",
@@ -49,27 +55,27 @@ $(function(){
   // ];
   var get_color = function(motifG)
   {
-  	if(motifG == 'motif-0')
+  	if(motifG == '0')
   	{
   		return '#6a38ff';
   	}
 
-  	if(motifG == 'motif-1')
+  	if(motifG == '1')
   	{
   		return '#FF0000';
   	}
 
-  	if(motifG == 'motif-2')
+  	if(motifG == '2')
   	{
   		return '#FFD700';
   	}
 
-  	if(motifG == 'motif-3')
+  	if(motifG == '3')
   	{
   		return '#800000';
   	}
 
-  	if(motifG == 'motif-4')
+  	if(motifG == '4')
   	{
   		return '#FF00FF';
   	}
@@ -80,9 +86,12 @@ $(function(){
   	var segments = [];
   	var points = [];
     var i;
+    var strength = []
   	for (i = sites.length - 1; i >= 0; i--) {
   		points.push({number:i, point:sites[i].pos, type:'start'});
   		points.push({number:i, point:sites[i].pos + sites[i].length, type:'end'});
+  		console.log(sites[i].strength)
+  		strength.push(sites[i].strength);
   	}
   	points.sort(function(a,b){ return a.point - b.point; });
   	// $.each(points, function(point){
@@ -94,11 +103,13 @@ $(function(){
     var site_numbers = {};
     for (i = 0; i < points.length; ++i) {
     	var thispoint = points[i];
+    	var thisstrength = strength[i];
 	    if (last_point_pos != thispoint.point) {
 	      segments.push({
 	        start: last_point_pos,
 	        end: thispoint.point,
 	        sites: sites_in_dict(site_numbers),
+	        strength: thisstrength,
 	      });
 	      last_point_pos = thispoint.point;
 	    }
@@ -113,6 +124,7 @@ $(function(){
     		start: last_point_pos,
 	        end: seq,
 	        sites: sites_in_dict(site_numbers),
+
 	    });
     //console.log(segments)
     return segments
@@ -194,7 +206,8 @@ $(function(){
     } else {
       var motif = span_classes[0][1];
       var klass = span_classes[0][0];
-      return '<span style="background-color: '+ get_color(klass) +'; opacity:'+ get_strength(motif) +';" class="' + klass + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
+      var num = klass[klass.length-1];
+      return '<span style="background-color: '+ get_color(num) +'; opacity:'+ strength +';" class="' + klass + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
     }
   }
 
@@ -211,7 +224,7 @@ $(function(){
       {
         return ['motif-' + (el - number_to_subtract), sites[el].motif,];
       });
-
+      console.log(segment.strength)
       return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes,segment.strength);
     }).join('');
   }
@@ -246,7 +259,7 @@ $(function(){
           motif: motif_name,
           pos: motif_start,
           length: motif.length,
-          strength: p_value,
+          strength: rescale(-log10(p_value)),
           strand: strand,
         });
       }
