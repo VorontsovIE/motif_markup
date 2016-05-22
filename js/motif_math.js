@@ -6,10 +6,10 @@ function log10(x) { // for test
 
 function getScores(sequence, motif, direction) {
   var nucleotide_index = { // for pwm
-    "A" : "0",
-    "C" : "1",
-    "G" : "2",
-    "T" : "3"
+    "A" : 0, 'a': 0,
+    "C" : 1, 'c': 1,
+    "G" : 2, 'g': 2,
+    "T" : 3, 't': 3,
   }
   var n = sequence.length;
   var m = motif.length;
