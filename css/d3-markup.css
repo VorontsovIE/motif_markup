@@ -1,8 +1,22 @@
 ﻿body {
-	padding: 0;
-	margin: 0;
-	font: bold 48px monospace;
-	letter-spacing: 5px;
+	padding: 15px;
+}
+
+.container {
+	width: 100%;
+}
+
+div.b-input {
+	margin-bottom: 20px;
+}
+
+textarea.m-input {
+	width: 100%;
+	height: 200px;
+}
+
+div.b-results {
+	overflow: scroll;
 }
 
 div.hit {
@@ -20,6 +34,15 @@ div.sequence-index {
 div.sequence-index span {
 	width: 31.39px;
 	display: inline-block;
+}
+
+div.sequence {
+	font: bold 48px monospace;
+	letter-spacing: 5px;
+}
+
+div.sequence .m-highlighted {
+	background-color: yellow;
 }
 
 div.hits-row {
