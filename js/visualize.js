@@ -3,11 +3,11 @@
 var LETTER_WIDTH_PX = 31.39;
 var HIT_HEIGHT_PX = 30;
 
-var STRENGTH_MIN = 1;
-var STRENGTH_MAX = 7;
+var STRENGTH_MIN = 2;
+var STRENGTH_MAX = 6;
 
 var HIT_HEIGHT_MIN_PX = 30;
-var HIT_HEIGHT_MAX_PX = 60;
+var HIT_HEIGHT_MAX_PX = 100;
 
 var ALL_MOTIFS = [motifGata, motifAndr];
 
