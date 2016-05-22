@@ -19,6 +19,21 @@ var strengthScale = d3
 	.domain([STRENGTH_MIN, STRENGTH_MAX])
 	.range([HIT_HEIGHT_MIN_PX, HIT_HEIGHT_MAX_PX]);
 
+var colorScale = d3.scale.category10();
+
+var motifIndexes = _.chain(ALL_MOTIFS)
+	.map(function (m, i) { return [m.name, i]; })
+	.reduce(function(r, m) {
+		var kvp = {};
+		kvp[m[0]] = m[1];
+		return Object.assign(r, kvp);
+	}, {})
+	.value();
+
+function colorMotifScale(name) {
+	return colorScale(motifIndexes[name]);
+};
+
 
 //d3.select(".sequence-index")
 //	.style("width", function () { return data.sequence.array.length * LETTER_WIDTH_PX + "px"; })
@@ -74,6 +89,7 @@ function renderHits(data) {
 				.style("width", function (d) { return d.length * LETTER_WIDTH_PX + "px"; })
 				.style("height", function (d) { return strengthScale(d.strength) + "px"; })
 				.style("margin-left", function (d) { return d.pos * LETTER_WIDTH_PX + "px"; })
+				.style("background-color", function (d) { return colorMotifScale(d.motif); })
 				.text(function (d) { return d.motif; })
 				.on("mouseover", function (d) { renderSequence(data, function (s) { return highlightSequence(s, d.pos, d.pos + d.length - 1); }); })
 				.on("mouseout", function (d) { renderSequence(data,  function (s) { return removeHighlight(s); }); })
@@ -94,7 +110,8 @@ function renderSequenceWithResults(sequence, index) {
 			.groupBy("level")
 			.map(function (value, key) { return { depth: key, hits: value }; })
 			.value(),
-		containerSelector: ".hits-" + index
+		containerSelector: ".hits-" + index,
+		index: index
 	}
 	updateSequence(data.sequence);
 	renderHits(data);
@@ -131,4 +148,4 @@ function renderSequenceFromTextArea() {
 	renderSequences(sequences);
 }
 
-renderSequences(['AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA', 'AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA'])
+//renderSequences(['AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA', 'AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA'])
