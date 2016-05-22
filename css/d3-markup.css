@@ -1,13 +1,27 @@
 ﻿body {
 	padding: 0;
 	margin: 0;
+	font: bold 48px monospace;
+	letter-spacing: 5px;
 }
 
-.chart div {
-	font: 10px sans-serif;
+div.hit {
 	background-color: green;
-	text-align: right;
-	padding: 3px;
-	margin: 1px;
-	color: white;
+	position: absolute;
+	font: 14px sans-serif;
+	letter-spacing: normal;
+}
+
+div.sequence-index {
+	font: 20px arial;
+	letter-spacing: normal;
+}
+
+div.sequence-index span {
+	width: 31.39px;
+	display: inline-block;
+}
+
+div.clear {
+	float: none;
 }
