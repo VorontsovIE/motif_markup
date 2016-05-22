@@ -22,6 +22,10 @@ div.sequence-index span {
 	display: inline-block;
 }
 
+div.hits-row {
+	padding: 10px 0;
+}
+
 div.clear {
 	float: none;
 }

@@ -9,10 +9,11 @@ var hitsSample = [{ "motif": "AHR_HUMAN.H10MO.B", "pos": 13, "length": 9, "stren
 var hits = _.chain(hitsSample)
 	.sortBy(function (x) { return x.pos; })
 	.map(function (x) { return Object.assign(x, { strength: -log10(x.strength) }); })
-	//.groupBy("strength")
+	.groupBy("depth")
+	.map(function(value, key){ return { depth: key, hits: value}; })
 	.value();
 
-	var data = {
+var data = {
 	sequence: sequence,
 	hits: hits
 };
