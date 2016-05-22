@@ -90,9 +90,18 @@ function renderHits(data) {
 				.style("height", function (d) { return strengthScale(d.strength) + "px"; })
 				.style("margin-left", function (d) { return d.pos * LETTER_WIDTH_PX + "px"; })
 				.style("background-color", function (d) { return colorMotifScale(d.motif); })
+				.attr("tabindex", function (_, i) { return i; })
+				.attr("data-placement", "bottom")
+				.attr("data-trigger", "focus")
+				.attr("title", function (d) { return d.motif; })
+				.attr("data-html", true)
+				.attr("data-content", function (d) { return "Strength: " + d.strength + "<br/>Pos: " + d.pos})
 				.text(function (d) { return d.motif; })
 				.on("mouseover", function (d) { renderSequence(data, function (s) { return highlightSequence(s, d.pos, d.pos + d.length - 1); }); })
-				.on("mouseout", function (d) { renderSequence(data,  function (s) { return removeHighlight(s); }); })
+				.on("mouseout", function (d) { renderSequence(data, function (s) { return removeHighlight(s); }); })
+				.on("click", function(d, x, y) {
+					$(this).popover('show');
+				});
 }
 
 function renderSequenceWithResults(sequence, index) {

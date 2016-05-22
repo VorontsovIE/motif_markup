@@ -24,6 +24,7 @@ div.hit {
 	position: absolute;
 	font: 10px sans-serif;
 	letter-spacing: normal;
+	text-align: center;
 }
 
 .hit.strand-plus {
