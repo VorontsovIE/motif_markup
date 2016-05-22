@@ -8,7 +8,7 @@
 div.hit {
 	background-color: green;
 	position: absolute;
-	font: 14px sans-serif;
+	font: 10px sans-serif;
 	letter-spacing: normal;
 }
 
@@ -23,7 +23,10 @@ div.sequence-index span {
 }
 
 div.hits-row {
-	padding: 10px 0;
+	margin: 20px 0;
+	border-bottom: 1px solid rgba(255, 0,0, 0.5);
+	border-top: 1px solid rgba(255, 0,0, 0.5);
+	position: relative;
 }
 
 div.clear {
