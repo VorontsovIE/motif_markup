@@ -77,8 +77,13 @@ function findSites(sequence, original_motif, motif_name, threshold_pvalue_list, 
   return result;
 };
 
-function findAllSites(sequence, motif) {
-	return findSites(sequence, motif.matrix, motif.name, motif.threshold_pvalue_list, PVALUE_MAX);
+function findAllSites(sequence, motifs) {
+  var sites = [];
+  for (var i = 0; i < motifs.length; ++i) {
+    var motif = motifs[i];
+    sites = sites.concat(findSites(sequence, motif.matrix, motif.name, motif.threshold_pvalue_list, PVALUE_MAX));
+  }
+	return set_levels(sites);
 }
 
 function keys_of_true_elements(dict) {

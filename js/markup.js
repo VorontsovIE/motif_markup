@@ -44,6 +44,7 @@ function set_levels(sites) {
     sites[i].level = level;
     rightmost_end = current_site.pos + current_site.length;
   }
+  return sites;
 }
 
 function markup_segmentation(sequence, sites) {
