@@ -1,4 +1,6 @@
-function log10(x){ // for test
+var PVALUE_MAX = 0.01;
+
+function log10(x) { // for test
   return (Math.log(x)/Math.log(10) );
 }
 
@@ -74,6 +76,10 @@ function findSites(sequence, original_motif, motif_name, threshold_pvalue_list, 
   }
   return result;
 };
+
+function findAllSites(sequence, motif) {
+	return findSites(sequence, motif.matrix, motif.name, motif.threshold_pvalue_list, PVALUE_MAX);
+}
 
 function keys_of_true_elements(dict) {
   var result = [];
