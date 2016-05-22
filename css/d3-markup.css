@@ -1,0 +1,13 @@
+﻿body {
+	padding: 0;
+	margin: 0;
+}
+
+.chart div {
+	font: 10px sans-serif;
+	background-color: green;
+	text-align: right;
+	padding: 3px;
+	margin: 1px;
+	color: white;
+}
