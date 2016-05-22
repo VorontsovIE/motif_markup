@@ -19,6 +19,7 @@ var strengthScale = d3
 
 
 d3.select(".sequence-index")
+	.style("width", function () { return data.sequence.array.length * LETTER_WIDTH_PX + "px"; })
 	.selectAll("div")
 		.data(sequenceArray)
 	.enter().append("span")
@@ -54,6 +55,7 @@ function renderSequence(fn) {
 }
 
 d3.select(".hits")
+	.style("width", function () { return data.sequence.array.length * LETTER_WIDTH_PX + "px"; })
 	.selectAll("div")
 		.data(data.hits)
 	.enter().append("div")
