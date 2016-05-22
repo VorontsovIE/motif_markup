@@ -3,19 +3,19 @@ $(function(){
     return (Math.log(x)/Math.log(10) );
   }
 
-  var nucleotide_index = { // for pwm
-    "A" : "0",
-    "C" : "1",
-    "G" : "2",
-    "T" : "3"
-  }
 
-  function getScore(sequence, motif, direction) {
+  function getScores(sequence, motif, direction) {
+    var nucleotide_index = { // for pwm
+      "A" : "0",
+      "C" : "1",
+      "G" : "2",
+      "T" : "3"
+    }
     var n = sequence.length;
     var m = motif.length;
     var result = new Array(n - m + 1);
 
-    var motif_start;
+    var motif_start, position_in_motif;
     for (motif_start = 0; motif_start <= n - m; motif_start++){
       result[motif_start] = 0;
       for (position_in_motif = 0; position_in_motif < m; position_in_motif++){
@@ -236,10 +236,10 @@ $(function(){
   // motif = [[0.049659785047587994, -0.7112292711652767, 0.37218581437481474, 0.007118345755727385], [-1.186351771734709, -1.1076775894500088, -0.10122262270571959, 0.9004092051347231], [-0.5481419620395537, 0.1272377147320841, -0.59308886562888, 0.5502420250441404], [-2.3460850844035757, -2.7362137930742163, 1.3086872088653387, -1.979560121872743], [-3.4521272549574094, 1.3387809407527826, -2.670269442762779, -2.468668568747749], [-2.134973546777738, -2.965000508388951, 1.3322808172765501, -3.206089427067847], [-3.452127254957409, -2.134973546777738, -3.0087911229263193, 1.3351912597409452], [-3.4521272549574094, -3.4521272549574094, 1.3622489404156535, -3.4521272549574094], [0.10927007207680632, 0.5389064901558549, -0.8250174241334556, -0.3117320885632525]]
   // threshold_pvalue_list = [[-19.61437231767661, 1.0], [-16.669, 0.9706573486328125], [-11.569, 0.6465301513671875], [-9.349, 0.43091583251953125], [-7.289, 0.2872123718261719], [-5.949, 0.19127655029296875], [-4.699, 0.127593994140625], [-3.339, 0.08504104614257812], [-2.269, 0.05663299560546875], [-1.429, 0.03781890869140625], [-0.619, 0.025112152099609375], [0.251, 0.016819000244140625], [1.1909999999999998, 0.011199951171875], [1.9809999999999999, 0.007476806640625], [2.641, 0.004962921142578125], [3.181, 0.003276824951171875], [3.681, 0.0022125244140625], [4.211, 0.001476287841796875], [4.791, 9.8419189453125E-4], [5.481, 6.52313232421875E-4], [6.182, 4.3487548828125E-4], [6.652, 2.86102294921875E-4], [7.095, 1.94549560546875E-4], [7.444, 1.2969970703125E-4], [7.712000000000001, 8.392333984375E-5], [7.912999999999999, 5.7220458984375E-5], [8.231, 3.814697265625E-5], [8.363, 1.9073486328125E-5], [8.666, 1.1444091796875E-5], [8.724, 7.62939453125E-6], [8.793, 3.814697265625E-6]]
 
-  // p_value_max = 0.0000001;
+  p_value_max = 0.0000001;
 
   revcomp_motif = function(motif) {
-    var i, result = new Array(motif.length);
+    var i, result = [];
     for (i = 0; i < motif.length; ++i) {
       result.push(motif[i].reverse());
     }
@@ -249,12 +249,12 @@ $(function(){
   // мотив и сиквенс уже перевернуты, strand нужен, чтобы указать сайту имя нити
   findSitesGivenStrand = function(sequence, motif, motif_name, threshold_pvalue_list, p_value_max, strand) {
     var score, pvalue,
-        motif = cases[case_index].motif,
+        // motif = cases[case_index].motif,
         result = new Array();
-    score = getScore(sequence, motif);
+    scores = getScores(sequence, motif);
 
-    for (motif_start = 0; motif_start < pvalue_f.length; motif_start++) {
-      p_value = binarySearch(threshold_pvalue_list, score[motif_start]);
+    for (motif_start = 0; motif_start < scores.length; motif_start++) {
+      p_value = binarySearch(threshold_pvalue_list, scores[motif_start]);
       if (p_value <= p_value_max) {
         result.push({
           motif: motif_name,
