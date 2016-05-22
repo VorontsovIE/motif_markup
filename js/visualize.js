@@ -9,6 +9,8 @@ var STRENGTH_MAX = 7;
 var HIT_HEIGHT_MIN_PX = 30;
 var HIT_HEIGHT_MAX_PX = 60;
 
+var ALL_MOTIFS = [motifGata, motifAndr];
+
 // d3
 
 var strengthScale = d3
@@ -54,26 +56,46 @@ function renderSequence(fn) {
 	updateSequence(data.sequence);
 }
 
-d3.select(".hits")
-	.style("width", function () { return data.sequence.array.length * LETTER_WIDTH_PX + "px"; })
-	.selectAll("div")
-		.data(data.hits)
-	.enter().append("div")
-		.attr("class", "hits-row")
-		.style("height", function (d) {
-			var maxStrength = d3.max(d.hits, function (h) { return h.strength; });
-			return strengthScale(maxStrength) + "px";
-		})
+function renderHits(data) {
+	d3.select(".hits")
+		.style("width", function () { return data.sequence.array.length * LETTER_WIDTH_PX + "px"; })
 		.selectAll("div")
-			.data(function (d) { return d.hits; })
+			.data(data.hits)
 		.enter().append("div")
-			.attr("class", "hit")
-			.style("width", function (d) { return d.length * LETTER_WIDTH_PX + "px"; })
-			.style("height", function (d) { return strengthScale(d.strength) + "px"; })
-			.style("margin-left", function (d) { return d.pos * LETTER_WIDTH_PX + "px"; })
-			.text(function (d) { return d.motif; })
-			.on("mouseover", function (d) { renderSequence(function(s) { return highlightSequence(s, d.pos, d.pos + d.length - 1); }); })
-			.on("mouseout", function (d) { renderSequence(function (s) { return removeHighlight(s); }); })
-//.on("mousemove", function (d) { console.log('mouse move on ' + d.pos + ' to ' + d.pos + d.length - 1); });
+			.attr("class", "hits-row")
+			.style("height", function (d) {
+				var maxStrength = d3.max(d.hits, function (h) { return h.strength; });
+				return strengthScale(maxStrength) + "px";
+			})
+			.selectAll("div")
+				.data(function (d) { return d.hits; })
+			.enter().append("div")
+				.attr("class", "hit")
+				.style("width", function (d) { return d.length * LETTER_WIDTH_PX + "px"; })
+				.style("height", function (d) { return strengthScale(d.strength) + "px"; })
+				.style("margin-left", function (d) { return d.pos * LETTER_WIDTH_PX + "px"; })
+				.text(function (d) { return d.motif; })
+				.on("mouseover", function (d) { renderSequence(function (s) { return highlightSequence(s, d.pos, d.pos + d.length - 1); }); })
+				.on("mouseout", function (d) { renderSequence(function (s) { return removeHighlight(s); }); })
+}
 
-updateSequence(data.sequence);
+function renderSequenceWithResults(sequence) {
+	var results = findAllSites(sequence, ALL_MOTIFS);
+	var data = {
+		sequence: {
+			array: _.map(sequence, function (x) { return x }),
+			isHighlighted: false,
+			highlightFrom: -1,
+			highlightTo: -1
+		},
+		hits: _.chain(results)
+			.sortBy(function (x) { return x.pos; })
+			.groupBy("level")
+			.map(function (value, key) { return { depth: key, hits: value }; })
+			.value()
+	}
+	updateSequence(data.sequence);
+	renderHits(data);
+}
+
+renderSequenceWithResults('AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA');
