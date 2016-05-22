@@ -64,7 +64,12 @@ function markup_segmentation(sequence, sites) {
 
     sites.sort(function(a,b) { return b.level - a.level;} );
   	console.log(segment.sites);	
-    return wrap_in_multispan(sequence.slice(segment.start, segment.end), segment.sites);
+  	if (segment.sites.length == 0) {
+  	  return sequence.slice(segment.start, segment.end);
+  	} else {
+	  var tooltip_options = 'data-toggle="tooltip" data-title="Some text"'
+	  return '<span class="segment has-tooltip" ' + tooltip_options + '>' + wrap_in_multispan(sequence.slice(segment.start, segment.end), segment.sites) +'</span>';
+  	}
   }).join('');
 }
 

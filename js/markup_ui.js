@@ -40,6 +40,7 @@ $(function(){
     sites = findSites(sequence, motif, motif_name, threshold_pvalue_list, 0.1);
     var i = markup_segmentation(sequence, sites);
     $('#result').html(i);
+    $('#result .segment').tooltip();
   });
 
  //function(sequence, original_motif, motif_name, threshold_pvalue_list, p_value_max)
@@ -56,4 +57,5 @@ $(function(){
   $('#show_motif_list').click(function(event){
     $('#motif-list').show();
   });
+
 });
