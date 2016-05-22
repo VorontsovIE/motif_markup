@@ -112,7 +112,7 @@ function renderSequences(sequences) {
 
 	for (var i = 0; i < sequences.length; i++) {
 		var s = sequences[i];
-		var containerDiv = document.createElement("div");
+		var containerDiv = createDiv("sequence-result");
 		var sequenceContainer = createDiv('sequence sequence-' + i);
 		var hitsContainer = createDiv('hits hits-' + i);
 
@@ -123,6 +123,12 @@ function renderSequences(sequences) {
 
 		renderSequenceWithResults(s, i);
 	}
+}
+
+function renderSequenceFromTextArea() {
+	var text = document.getElementById("sequences-textarea").value;
+	var sequences = text.split('\n');
+	renderSequences(sequences);
 }
 
 renderSequences(['AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA', 'AAAGTGCTGCTGAGGCGTAGAGCGTCGGCTGATGCGCTTGACTAGACTAACGTTA'])
