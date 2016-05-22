@@ -27,6 +27,16 @@ div.hit {
 	letter-spacing: normal;
 }
 
+.hit.strand-plus {
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;
+}
+
+.hit.strand-minus {
+	border-top-left-radius: 20px;
+	border-bottom-left-radius: 20px;
+}
+
 div.sequence-index {
 	font: 20px arial;
 	letter-spacing: normal;

@@ -70,7 +70,7 @@ function renderHits(data) {
 			.selectAll("div")
 				.data(function (d) { return d.hits; })
 			.enter().append("div")
-				.attr("class", "hit")
+				.attr("class", function(d){ return ["hit", ((d.strand == '+') ? 'strand-plus' : 'strand-minus')].join(' '); } )
 				.style("width", function (d) { return d.length * LETTER_WIDTH_PX + "px"; })
 				.style("height", function (d) { return strengthScale(d.strength) + "px"; })
 				.style("margin-left", function (d) { return d.pos * LETTER_WIDTH_PX + "px"; })
