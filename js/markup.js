@@ -26,14 +26,14 @@ function get_strength(motifS) {
   }
 }
 
-function wrap_in_multispan(text, span_classes,strength) {
+function wrap_in_multispan(text, span_classes, strength) {
   if (span_classes.length == 0) {
     return text;
   } else {
     var motif = span_classes[0][1];
     var klass = span_classes[0][0];
     var num = klass[klass.length-1];
-    return '<span style="background-color: '+ get_color(num) +'; opacity:'+ rescale(strength) +';" class="' + klass + '">' + wrap_in_multispan(text, span_classes.slice(1)) + '</span>';
+    return '<span style="background-color: '+ get_color(num) +'; opacity:'+ rescale(strength) +';" class="' + klass + '">' + wrap_in_multispan(text, span_classes.slice(1), strength) + '</span>';
   }
 }
 
@@ -51,6 +51,6 @@ function markup_segmentation(sequence, sites) {
       return ['motif-' + (el - number_to_subtract), sites[el].motif,];
     });
 
-    return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes,segment.strength);
+    return wrap_in_multispan(sequence.slice(segment.start, segment.end), classes, segment.strength);
   }).join('');
 }

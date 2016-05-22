@@ -43,15 +43,16 @@ function revcomp_motif(motif) {
   };
 
 // мотив и сиквенс уже перевернуты, strand нужен, чтобы указать сайту имя нити
-function findSitesGivenStrand(sequence, motif, motif_name, threshold_pvalue_list, p_value_max, strand) {
+function findSitesGivenStrand(sequence, motif, motif_name, threshold_pvalue_list, pvalue_max, strand) {
   var score, pvalue,
       // motif = cases[case_index].motif,
       result = new Array();
   scores = getScores(sequence, motif);
-
+// console.log(threshold_pvalue_list);
   for (motif_start = 0; motif_start < scores.length; motif_start++) {
-    p_value = binarySearch(threshold_pvalue_list, scores[motif_start]);
-    if (p_value <= p_value_max) {
+    pvalue = binarySearch(threshold_pvalue_list, scores[motif_start]);
+    // console.log(scores[motif_start],pvalue);
+    if (pvalue <= pvalue_max) {
       result.push({
         motif: motif_name,
         pos: motif_start,
@@ -64,12 +65,12 @@ function findSitesGivenStrand(sequence, motif, motif_name, threshold_pvalue_list
   return result;
 };
 
-function findSites(sequence, original_motif, motif_name, threshold_pvalue_list, p_value_max) {
+function findSites(sequence, original_motif, motif_name, threshold_pvalue_list, pvalue_max) {
   var case_index,
       result = [],
       cases = [{motif: original_motif, strand: '+'}, {motif: revcomp_motif(original_motif), strand: '-'}];
   for (case_index = 0; case_index < cases.length; ++case_index) {
-    result = result.concat(findSitesGivenStrand(sequence, cases[case_index].motif, motif_name, threshold_pvalue_list, p_value_max, cases[case_index].strand));
+    result = result.concat(findSitesGivenStrand(sequence, cases[case_index].motif, motif_name, threshold_pvalue_list, pvalue_max, cases[case_index].strand));
   }
   return result;
 };
