@@ -4,7 +4,7 @@
 
 .container {
 	width: 100%;
-	height: 90vh;
+	/*height: 90vh;*/
 }
 
 div.b-input {
@@ -65,4 +65,9 @@ div.hits-row {
 
 div.clear {
 	float: none;
+}
+
+div.sequence-result {
+	/*border-bottom: 2px dashed gray;*/
+	margin-bottom: 30px;
 }
