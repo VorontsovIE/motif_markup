@@ -96,7 +96,6 @@ function make_segmentation(sites,seq) {
   var segments = [];
   var points = [];
   var i;
-
   for (i = sites.length - 1; i >= 0; i--) {
     points.push({number:i, point:sites[i].pos, type:'start'});
     points.push({number:i, point:sites[i].pos + sites[i].length, type:'end'});
@@ -107,12 +106,11 @@ function make_segmentation(sites,seq) {
   var site_numbers = {};
   for (i = 0; i < points.length; ++i) {
     var thispoint = points[i];
-    var thisstrength = strength[i];
     if (last_point_pos != thispoint.point) {
       segments.push({
         start: last_point_pos,
         end: thispoint.point,
-        sites: keys_of_true_elements(site_numbers),
+        sites: keys_of_true_elements(site_numbers).map(function(site_index){ return sites[site_index]; }),
       });
       last_point_pos = thispoint.point;
     }
@@ -126,7 +124,7 @@ function make_segmentation(sites,seq) {
   segments.push({
       start: last_point_pos,
         end: seq,
-        sites: keys_of_true_elements(site_numbers),
+        sites: keys_of_true_elements(site_numbers).map(function(site_index){ return sites[site_index]; }),
     });
   return segments
 }
